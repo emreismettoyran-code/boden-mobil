@@ -1,0 +1,1 @@
+config.js merkezi bağlantı yapılandırması GitHub'da güncellenmiştir; mevcut canlı sayfa cache nedeniyle birkaç dakika eski dosyayı gösterebilir.
