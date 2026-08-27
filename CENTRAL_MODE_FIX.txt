@@ -1,0 +1,2 @@
+MERKEZİ VERİ KONTROL NOTU
+Uygulama ortak kullanım için Supabase merkezli çalışmalıdır. config.js içinde BODEN_API_BASE, BODEN_DATA_MODE='central' ve BODEN_SHARED_STORE_KEY tanımlıdır.
