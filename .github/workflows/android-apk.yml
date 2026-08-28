@@ -1,0 +1,39 @@
+name: Android APK
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v4
+      - name: Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Android SDK
+        uses: android-actions/setup-android@v3
+      - name: SDK bileşenleri
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Web uygulamasını Android assets içine kopyala
+        run: |
+          mkdir -p app/src/main/assets
+          cp index.html app/src/main/assets/index.html
+          cp manifest.webmanifest app/src/main/assets/manifest.webmanifest
+          cp sw.js app/src/main/assets/sw.js
+          cp icon.svg app/src/main/assets/icon.svg
+      - name: Gradle kurulumu
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
+      - name: APK oluştur
+        run: gradle --no-daemon assembleDebug
+      - name: APK yükle
+        uses: actions/upload-artifact@v4
+        with:
+          name: Boden-Olcu-Android
+          path: app/build/outputs/apk/debug/app-debug.apk
