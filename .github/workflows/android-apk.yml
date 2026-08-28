@@ -17,7 +17,6 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-          cache: gradle
 
       - name: Android SDK
         uses: android-actions/setup-android@v3
@@ -32,23 +31,23 @@ jobs:
         with:
           gradle-version: '8.10.2'
 
-      - name: Android projesini kontrol et
+      - name: Android projesini doğrula
         working-directory: android
         run: |
           set -euxo pipefail
           gradle --version
-          find . -maxdepth 5 -type f -print
+          gradle --no-daemon --stacktrace tasks
 
       - name: APK oluştur
         working-directory: android
         run: |
           set -euxo pipefail
-          gradle --no-daemon --stacktrace --info clean assembleDebug
+          gradle --no-daemon --stacktrace clean assembleDebug
 
       - name: APK dosyasını doğrula
         run: |
           set -euxo pipefail
-          test -f android/app/build/outputs/apk/debug/app-debug.apk
+          test -s android/app/build/outputs/apk/debug/app-debug.apk
           ls -lh android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: APK yükle
