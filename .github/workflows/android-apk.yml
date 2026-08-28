@@ -26,12 +26,12 @@ jobs:
           cp manifest.webmanifest app/src/main/assets/manifest.webmanifest
           cp sw.js app/src/main/assets/sw.js
           cp icon.svg app/src/main/assets/icon.svg
-      - name: Gradle kurulumu
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.10.2'
+      - name: Gradle 8.10.2 indir
+        run: |
+          curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.10.2-bin.zip
+          unzip -q gradle.zip
       - name: APK oluştur
-        run: gradle --no-daemon assembleDebug
+        run: ./gradle-8.10.2/bin/gradle --no-daemon assembleDebug
       - name: APK yükle
         uses: actions/upload-artifact@v4
         with:
