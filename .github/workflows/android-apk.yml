@@ -19,21 +19,15 @@ jobs:
         uses: android-actions/setup-android@v3
       - name: SDK bileşenleri
         run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Web uygulamasını Android assets içine kopyala
-        run: |
-          mkdir -p app/src/main/assets
-          cp index.html app/src/main/assets/index.html
-          cp manifest.webmanifest app/src/main/assets/manifest.webmanifest
-          cp sw.js app/src/main/assets/sw.js
-          cp icon.svg app/src/main/assets/icon.svg
       - name: Gradle 8.10.2 indir
         run: |
           curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.10.2-bin.zip
           unzip -q gradle.zip
       - name: APK oluştur
-        run: ./gradle-8.10.2/bin/gradle --no-daemon assembleDebug
+        working-directory: android
+        run: ../gradle-8.10.2/bin/gradle --no-daemon assembleDebug
       - name: APK yükle
         uses: actions/upload-artifact@v4
         with:
           name: Boden-Olcu-Android
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
