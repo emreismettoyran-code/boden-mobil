@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>TCDD TEKNİK – PERSONEL FAZLA ÇALIŞMA / MESAİ</title>
+<script src="config.js"></script>
+<style>
+:root{--navy:#123f69;--navy2:#0d3558;--line:#aeb8c2;--bg:#edf1f5;--card:#f7f9fb;--red:#c90028;--green:#16834b;--text:#18212b}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}
+.header{background:var(--navy);color:#fff;padding:14px 18px 10px;position:sticky;top:0;z-index:20;box-shadow:0 2px 8px #0003}.title{font-size:20px;font-weight:800;letter-spacing:.3px}.subtitle{font-size:12px;opacity:.88;margin-top:3px}.toolbar{display:flex;gap:8px;justify-content:flex-end;margin-top:10px;flex-wrap:wrap}.btn{border:1px solid #aebdcc;border-radius:9px;background:#fff;color:#163b5c;padding:9px 14px;font-weight:800}.btn.primary{background:#fff}.btn.blue{background:var(--navy);color:#fff;border-color:#0b2d4c}.btn.red{background:var(--red);color:#fff;border-color:#a40020}.btn.green{background:var(--green);color:#fff;border-color:#0d6338}.btn.small{padding:7px 10px;font-size:13px}
+.tabs{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:4px;padding:7px;background:#fff;border-bottom:1px solid #bcc6d0;position:sticky;top:78px;z-index:15}.tab{padding:13px 8px;border:1px solid #b6c0ca;border-radius:8px;background:#f7f8fa;color:#101820;font-weight:800;text-align:center}.tab.active{background:var(--navy);color:#fff;border-color:#2e6da5}
+.wrap{max-width:1500px;margin:0 auto;padding:12px}.status{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #c5cdd5;border-radius:8px;padding:8px 12px;font-size:12px;margin-bottom:10px}.dot{width:9px;height:9px;border-radius:50%;background:#aaa}.dot.ok{background:#16834b}.dot.bad{background:#c90028}
+.layout{display:grid;grid-template-columns:245px minmax(420px,1fr) 245px;gap:10px;align-items:start}.panel{background:var(--card);border:1px solid #c1cad3;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px #0001}.panel-head{background:var(--navy);color:#fff;font-weight:800;padding:11px 12px}.panel-body{padding:10px}.person-search{width:100%;padding:10px;border:1px solid var(--line);border-radius:7px;background:#fff;margin-bottom:8px}.people{max-height:570px;overflow:auto}.person{display:flex;justify-content:space-between;align-items:center;padding:10px 8px;border-bottom:1px solid #d8dee4;background:#fff}.person:hover{background:#eef5fb}.person.active{background:#dceaf6;border-left:5px solid var(--navy);padding-left:3px}.person-name{font-weight:800}.person-meta{font-size:11px;color:#65717d;margin-top:2px}.person-actions{display:flex;gap:4px}.iconbtn{border:1px solid #b7c1ca;background:#fff;border-radius:6px;padding:5px 7px}.empty{padding:18px 8px;color:#66727e;text-align:center;font-size:13px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.field label{display:block;font-weight:800;font-size:13px;margin:0 0 5px}.field input,.field select,.field textarea{width:100%;border:1px solid #aeb8c2;border-radius:7px;background:#fff;padding:10px;min-height:42px}.field textarea{min-height:78px;resize:vertical}.section{background:#fff;border:1px solid #c6ced6;border-radius:9px;padding:11px;margin-bottom:10px}.section h3{margin:0 0 10px;text-align:center;color:var(--navy);font-size:16px}.full{grid-column:1/-1}.calc{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.metric{border:1px solid #ccd4dc;border-radius:7px;background:#f5f7f9;padding:8px}.metric span{display:block;font-size:11px;color:#697580}.metric b{font-size:18px}.form-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hint{font-size:11px;color:#65717d;margin-top:6px}.selected{background:#e8f1f8;border:1px solid #b7cad9;border-radius:7px;padding:8px;margin-bottom:10px;font-weight:800}.filter-grid{display:grid;gap:8px}.filter-grid label{font-size:12px;font-weight:800}.filter-grid input,.filter-grid select{width:100%;padding:9px;border:1px solid #aeb8c2;border-radius:7px;background:#fff}.summary{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.summary .metric{background:#fff}.summary .metric b{font-size:16px}
+.table-panel{margin-top:10px}.table-wrap{overflow:auto;background:#fff}.table{border-collapse:collapse;width:100%;min-width:1120px;font-size:12px}.table th,.table td{border:1px solid #b8c1ca;padding:7px 6px;white-space:nowrap;text-align:center}.table th{background:#dfe7ee;color:#163c5d;font-weight:800;position:sticky;top:0}.table td.left{text-align:left}.table tr:nth-child(even) td{background:#fafbfd}.total-row td{font-weight:800;background:#eef3f7!important}.badge{display:inline-block;border-radius:12px;padding:3px 7px;font-size:10px;font-weight:800}.badge.ok{background:#d9f1e4;color:#12673b}.badge.wait{background:#fff0c7;color:#785900}.badge.no{background:#f8dadd;color:#8d1026}.note{font-size:12px;color:#65717d;padding:10px}.footer{padding:18px 12px 35px;text-align:center;font-size:11px;color:#66727e}.hidden{display:none!important}
+@media(max-width:1050px){.layout{grid-template-columns:1fr 1fr}.layout .people-panel{grid-column:1}.layout .filter-panel{grid-column:2}.layout .form-panel{grid-column:1/-1}.tabs{top:86px}}
+@media(max-width:700px){.header{padding:11px 10px}.title{font-size:16px}.toolbar{justify-content:stretch}.toolbar .btn{flex:1}.tabs{top:68px;grid-template-columns:repeat(3,1fr);overflow:auto}.tab{font-size:12px;padding:11px 4px;white-space:nowrap}.wrap{padding:7px}.layout{display:flex;flex-direction:column}.panel{width:100%}.people-panel{order:1}.form-panel{order:2}.filter-panel{order:3}.people{max-height:260px}.form-grid{grid-template-columns:1fr}.calc{grid-template-columns:1fr 1fr}.form-actions{grid-template-columns:1fr 1fr}.table-panel{order:4}.table{min-width:1120px}.status{font-size:11px}.field input,.field select,.field textarea{font-size:16px}}
+@media print{.header,.tabs,.people-panel,.filter-panel,.form-panel,.status,.footer,.note,.table-panel .panel-head{display:none!important}.wrap{padding:0}.table-panel{margin:0;box-shadow:none;border:0}.table-wrap{overflow:visible}.table{min-width:0;width:100%;font-size:9px}.table th,.table td{padding:4px}.table th{position:static}.print-title{display:block!important;text-align:center;font-weight:800;margin:0 0 8px}}
+.print-title{display:none}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="title">TCDD TEKNİK – PERSONEL FAZLA ÇALIŞMA / MESAİ</div>
+  <div class="subtitle">Boden Ölçü Defteri mantığında • Her personel ayrı kayıt • Ortak merkezi veri</div>
+  <div class="toolbar">
+    <button class="btn" id="printBtn">YAZDIR / PDF</button>
+    <button class="btn" id="exportBtn">YEDEK AL</button>
+    <button class="btn" id="importBtn">YEDEK YÜKLE</button>
+    <input type="file" id="importFile" accept="application/json" class="hidden">
+  </div>
+</header>
+<nav class="tabs">
+  <button class="tab active" data-tab="entry">MESAİ GİRİŞİ</button>
+  <button class="tab" data-tab="records">MESAİ DEFTERİ</button>
+  <button class="tab" data-tab="history">MESAİ GEÇMİŞİ</button>
+</nav>
+<main class="wrap">
+  <div class="status"><span class="dot" id="statusDot"></span><span id="statusText">Merkezi veri bağlantısı kontrol ediliyor...</span></div>
+  <div class="layout">
+    <aside class="panel people-panel">
+      <div class="panel-head">PERSONEL LİSTESİ</div>
+      <div class="panel-body">
+        <input class="person-search" id="personSearch" placeholder="Personel ara...">
+        <button class="btn blue" style="width:100%;margin-bottom:8px" id="addPersonBtn">+ YENİ PERSONEL</button>
+        <div class="people" id="peopleList"></div>
+      </div>
+    </aside>
+
+    <section class="panel form-panel">
+      <div class="panel-head">PERSONEL MESAİ GİRİŞİ</div>
+      <div class="panel-body">
+        <div class="selected" id="selectedPerson">Personel seçiniz.</div>
+        <div class="section">
+          <h3>ÇALIŞMA BİLGİLERİ</h3>
+          <div class="form-grid">
+            <div class="field"><label>Tarih</label><input type="date" id="date"></div>
+            <div class="field"><label>Mesai Türü</label><select id="type"><option>Fazla Çalışma</option><option>Hafta Tatili</option><option>Resmî Tatil</option><option>Gece Çalışması</option></select></div>
+            <div class="field"><label>Normal Mesai Başlangıç</label><input type="time" id="normalStart" value="08:00"></div>
+            <div class="field"><label>Normal Mesai Bitiş</label><input type="time" id="normalEnd" value="17:00"></div>
+            <div class="field"><label>Fazla Mesai Başlangıç</label><input type="time" id="otStart"></div>
+            <div class="field"><label>Fazla Mesai Bitiş</label><input type="time" id="otEnd"></div>
+            <div class="field"><label>Mola (dakika)</label><input type="number" id="breakMin" min="0" step="1" value="0"></div>
+            <div class="field"><label>Saat Ücreti (TL) – isteğe bağlı</label><input type="number" id="hourRate" min="0" step="0.01" placeholder="Örn. 250"></div>
+            <div class="field full"><label>Mesai Nedeni / Yapılan İş</label><textarea id="reason" placeholder="Yapılan iş, arıza, bakım, görev vb."></textarea></div>
+          </div>
+        </div>
+        <div class="section">
+          <h3>HESAPLANAN DEĞERLER</h3>
+          <div class="calc">
+            <div class="metric"><span>Fazla çalışma</span><b id="hoursOut">0:00</b></div>
+            <div class="metric"><span>Ondalık saat</span><b id="decimalOut">0.00</b></div>
+            <div class="metric"><span>Tahmini tutar</span><b id="amountOut">0,00 TL</b></div>
+          </div>
+          <div class="hint">Başlangıç ve bitiş saatini girince süre otomatik hesaplanır. Gece yarısını aşan mesai desteklenir.</div>
+        </div>
+        <div class="form-actions">
+          <button class="btn blue" id="saveBtn">KAYDET</button>
+          <button class="btn" id="clearBtn">TEMİZLE</button>
+          <button class="btn red" id="deleteBtn">SEÇİLİ KAYDI SİL</button>
+          <button class="btn green" id="newBtn">YENİ KAYIT</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel filter-panel">
+      <div class="panel-head">SÜZMELER / PERSONEL</div>
+      <div class="panel-body">
+        <div class="filter-grid">
+          <label>Personel</label><select id="filterPerson"><option value="">Tüm Personel</option></select>
+          <label>Ay</label><input type="month" id="filterMonth">
+          <label>Mesai türü</label><select id="filterType"><option value="">Tümü</option><option>Fazla Çalışma</option><option>Hafta Tatili</option><option>Resmî Tatil</option><option>Gece Çalışması</option></select>
+          <label>Durum</label><select id="filterStatus"><option value="">Tümü</option><option value="Onaylandı">Onaylandı</option><option value="Bekliyor">Bekliyor</option><option value="Reddedildi">Reddedildi</option></select>
+        </div>
+        <div class="summary">
+          <div class="metric"><span>Kayıt</span><b id="sumRecords">0</b></div>
+          <div class="metric"><span>Toplam saat</span><b id="sumHours">0:00</b></div>
+          <div class="metric"><span>Toplam gün</span><b id="sumDays">0</b></div>
+          <div class="metric"><span>Tahmini tutar</span><b id="sumAmount">0 TL</b></div>
+        </div>
+        <button class="btn" style="width:100%;margin-top:10px" id="clearFilters">FİLTREYİ TEMİZLE</button>
+      </div>
+    </aside>
+  </div>
+
+  <section class="panel table-panel">
+    <div class="panel-head">KAYITLAR</div>
+    <div class="print-title">TCDD TEKNİK – PERSONEL FAZLA ÇALIŞMA / MESAİ DEFTERİ</div>
+    <div class="table-wrap"><table class="table"><thead><tr>
+      <th>Tarih</th><th>Personel</th><th>Mesai Türü</th><th>Normal Baş.</th><th>Normal Bit.</th><th>Fazla Baş.</th><th>Fazla Bit.</th><th>Süre</th><th>Saat Ücreti</th><th>Tutar</th><th>Durum</th><th>İşlem</th>
+    </tr></thead><tbody id="recordsBody"></tbody></table></div>
+    <div class="note">Kayıtlar personel bazında ayrı tutulur. Merkezi veri açık olduğunda aynı kayıtlar telefon ve bilgisayarlarda ortak görünür.</div>
+  </section>
+  <div class="footer">TCDD TEKNİK • Personel Fazla Çalışma / Mesai Takip • Kurulum gerektirmez, tarayıcıdan çalışır.</div>
+</main>
+
+<script>
+const KEY_PERSONS='mesai_personeller_v1';
+const PREFIX='mesai_record_v1_';
+let persons=[]; let records=[]; let selectedPersonId=''; let editingId='';
+const $=id=>document.getElementById(id);
+const uid=()=>Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+function today(){const d=new Date();return d.toISOString().slice(0,10)}
+$('date').value=today();
+function saveKey(k,v){localStorage.setItem(k,JSON.stringify(v));}
+function readJson(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v??f}catch{return f}}
+function loadData(){persons=readJson(KEY_PERSONS,[]);records=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith(PREFIX)){const r=readJson(k,null);if(r&&r.id)records.push(r)}}records.sort((a,b)=>(b.date+b.createdAt).localeCompare(a.date+a.createdAt));}
+function renderPeople(){const q=$('personSearch').value.trim().toLocaleLowerCase('tr');const list=persons.filter(p=>p.name.toLocaleLowerCase('tr').includes(q));$('peopleList').innerHTML=list.length?list.map(p=>`<div class="person ${p.id===selectedPersonId?'active':''}" data-id="${esc(p.id)}"><div><div class="person-name">${esc(p.name)}</div><div class="person-meta">${records.filter(r=>r.personId===p.id).length} kayıt</div></div><div class="person-actions"><button class="iconbtn" title="Seç">✓</button><button class="iconbtn del-person" title="Personeli sil">×</button></div></div>`).join(''):'<div class="empty">Henüz personel yok.</div>';
+ document.querySelectorAll('.person').forEach(el=>el.addEventListener('click',e=>{if(e.target.closest('.del-person'))return;selectPerson(el.dataset.id)}));
+ document.querySelectorAll('.del-person').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();deletePerson(b.closest('.person').dataset.id)}));
+ const fp=$('filterPerson');fp.innerHTML='<option value="">Tüm Personel</option>'+persons.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('');fp.value=fp.value||'';
+}
+function selectPerson(id){selectedPersonId=id;$('selectedPerson').textContent='Seçili personel: '+(persons.find(p=>p.id===id)?.name||'');renderPeople();}
+function addPerson(){const name=prompt('Personel ad soyadını girin:');if(!name||!name.trim())return;const p={id:uid(),name:name.trim(),createdAt:new Date().toISOString()};persons.push(p);saveKey(KEY_PERSONS,persons);selectedPersonId=p.id;renderPeople();selectPerson(p.id);}
+function deletePerson(id){const p=persons.find(x=>x.id===id);if(!p)return;if(!confirm(`${p.name} personeli ve bu personele ait kayıtlar silinsin mi?`))return;persons=persons.filter(x=>x.id!==id);saveKey(KEY_PERSONS,persons);records.filter(r=>r.personId===id).forEach(r=>localStorage.removeItem(PREFIX+r.id));if(selectedPersonId===id)selectedPersonId='';loadData();renderPeople();renderTable();}
+function minutes(t){if(!t)return null;const [h,m]=t.split(':').map(Number);return h*60+m}
+function diffMinutes(a,b){if(!a||!b)return 0;let x=minutes(a),y=minutes(b);if(y<x)y+=1440;return Math.max(0,y-x)}
+function calc(){const raw=diffMinutes($('otStart').value,$('otEnd').value)-Number($('breakMin').value||0);const min=Math.max(0,raw);const dec=min/60;const rate=Number($('hourRate').value||0);$('hoursOut').textContent=`${Math.floor(min/60)}:${String(min%60).padStart(2,'0')}`;$('decimalOut').textContent=dec.toFixed(2);$('amountOut').textContent=(dec*rate).toLocaleString('tr-TR',{minimumFractionDigits:2,maximumFractionDigits:2})+' TL';return {minutes:min,decimal:dec,amount:dec*rate}}
+function clearForm(){editingId='';$('date').value=today();$('type').value='Fazla Çalışma';$('normalStart').value='08:00';$('normalEnd').value='17:00';$('otStart').value='';$('otEnd').value='';$('breakMin').value='0';$('hourRate').value='';$('reason').value='';$('deleteBtn').disabled=true;calc();}
+function saveRecord(){if(!selectedPersonId){alert('Önce personel seçin.');return}const c=calc();if(!c.minutes){alert('Fazla mesai başlangıç ve bitiş saatlerini girin.');return}const existing=editingId?records.find(r=>r.id===editingId):null;const r={id:editingId||uid(),personId:selectedPersonId,date:$('date').value,type:$('type').value,normalStart:$('normalStart').value,normalEnd:$('normalEnd').value,otStart:$('otStart').value,otEnd:$('otEnd').value,breakMin:Number($('breakMin').value||0),hourRate:Number($('hourRate').value||0),minutes:c.minutes,decimal:c.decimal,amount:c.amount,reason:$('reason').value.trim(),status:existing?.status||'Bekliyor',createdAt:existing?.createdAt||new Date().toISOString(),updatedAt:new Date().toISOString()};saveKey(PREFIX+r.id,r);editingId=r.id;loadData();renderPeople();renderTable();alert('Mesai kaydı kaydedildi.');}
+function editRecord(id){const r=records.find(x=>x.id===id);if(!r)return;editingId=id;selectedPersonId=r.personId;$('date').value=r.date;$('type').value=r.type;$('normalStart').value=r.normalStart||'';$('normalEnd').value=r.normalEnd||'';$('otStart').value=r.otStart||'';$('otEnd').value=r.otEnd||'';$('breakMin').value=r.breakMin||0;$('hourRate').value=r.hourRate||'';$('reason').value=r.reason||'';$('deleteBtn').disabled=false;selectPerson(r.personId);calc();window.scrollTo({top:0,behavior:'smooth'});}
+function deleteRecord(id){const r=records.find(x=>x.id===id);if(!r)return;if(!confirm('Bu mesai kaydı silinsin mi?'))return;localStorage.removeItem(PREFIX+id);if(editingId===id)clearForm();loadData();renderPeople();renderTable();}
+function statusBadge(r){return r.status==='Onaylandı'?'<span class="badge ok">ONAYLANDI</span>':r.status==='Reddedildi'?'<span class="badge no">REDDEDİLDİ</span>':'<span class="badge wait">BEKLİYOR</span>'}
+function renderTable(){const pid=$('filterPerson').value;const month=$('filterMonth').value;const type=$('filterType').value;const st=$('filterStatus').value;let arr=records.filter(r=>(!pid||r.personId===pid)&&(!month||r.date.startsWith(month))&&(!type||r.type===type)&&(!st||r.status===st));const body=$('recordsBody');body.innerHTML=arr.length?arr.map(r=>{const p=persons.find(x=>x.id===r.personId);return `<tr><td>${esc(r.date)}</td><td class="left"><b>${esc(p?.name||'Silinmiş personel')}</b></td><td>${esc(r.type)}</td><td>${esc(r.normalStart||'')}</td><td>${esc(r.normalEnd||'')}</td><td>${esc(r.otStart)}</td><td>${esc(r.otEnd)}</td><td><b>${Math.floor(r.minutes/60)}:${String(r.minutes%60).padStart(2,'0')}</b></td><td>${Number(r.hourRate||0).toLocaleString('tr-TR',{minimumFractionDigits:2})}</td><td>${Number(r.amount||0).toLocaleString('tr-TR',{minimumFractionDigits:2})} TL</td><td>${statusBadge(r)}</td><td><button class="btn small" onclick="editRecord('${esc(r.id)}')">DÜZENLE</button> <button class="btn small red" onclick="deleteRecord('${esc(r.id)}')">SİL</button></td></tr>`}).join(''):'<tr><td colspan="12" class="empty">Filtreye uygun mesai kaydı bulunamadı.</td></tr>';
+ const mins=arr.reduce((s,r)=>s+Number(r.minutes||0),0),amount=arr.reduce((s,r)=>s+Number(r.amount||0),0);$('sumRecords').textContent=arr.length;$('sumHours').textContent=`${Math.floor(mins/60)}:${String(mins%60).padStart(2,'0')}`;$('sumDays').textContent=new Set(arr.map(r=>r.date)).size;$('sumAmount').textContent=amount.toLocaleString('tr-TR',{minimumFractionDigits:2})+' TL';
+}
+function exportData(){loadData();const data={version:1,exportedAt:new Date().toISOString(),persons,records};const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));a.download='personel-mesai-yedek-'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('importBtn').onclick=()=>$('importFile').click();$('importFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const data=JSON.parse(await f.text());if(!Array.isArray(data.persons)||!Array.isArray(data.records))throw Error('Geçersiz yedek');if(!confirm('Mevcut kayıtların üzerine yedek yüklensin mi?'))return;persons=data.persons;records=data.records;saveKey(KEY_PERSONS,persons);records.forEach(r=>saveKey(PREFIX+r.id,r));loadData();renderPeople();renderTable();alert('Yedek yüklendi.')}catch(err){alert('Yedek yüklenemedi.')}};
+$('addPersonBtn').onclick=addPerson;$('saveBtn').onclick=saveRecord;$('clearBtn').onclick=clearForm;$('newBtn').onclick=()=>{editingId='';clearForm()};$('deleteBtn').onclick=()=>editingId&&deleteRecord(editingId);$('printBtn').onclick=()=>window.print();$('exportBtn').onclick=exportData;
+['otStart','otEnd','breakMin','hourRate'].forEach(id=>$(id).addEventListener('input',calc));$('personSearch').addEventListener('input',renderPeople);['filterPerson','filterMonth','filterType','filterStatus'].forEach(id=>$(id).addEventListener('change',renderTable));$('clearFilters').onclick=()=>{$('filterPerson').value='';$('filterMonth').value='';$('filterType').value='';$('filterStatus').value='';renderTable()};
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');if(t.dataset.tab==='records'||t.dataset.tab==='history')window.scrollTo({top:document.querySelector('.table-panel').offsetTop-120,behavior:'smooth'});else window.scrollTo({top:0,behavior:'smooth'})});
+function centralStatus(){const ok=window.BODEN_CENTRAL_READY&&window.BODEN_CLOUD_ONLINE;$('statusDot').className='dot '+(ok?'ok':'bad');$('statusText').textContent=ok?'MERKEZİ VERİ: ÇEVRİMİÇİ • Telefon ve bilgisayar ortak kayıt kullanıyor':'MERKEZİ VERİ: BAĞLANTI YOK • Bu cihazın yerel verisi kullanılıyor';}
+function init(){loadData();renderPeople();clearForm();renderTable();centralStatus();setTimeout(()=>{loadData();renderPeople();renderTable();centralStatus()},1200)}
+window.addEventListener('boden-central-ready',()=>{setTimeout(()=>{loadData();renderPeople();renderTable();centralStatus()},250)});window.addEventListener('storage',()=>{loadData();renderPeople();renderTable()});init();
+</script>
+</body>
+</html>
