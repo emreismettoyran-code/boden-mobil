@@ -18,14 +18,14 @@ jobs:
       - name: Android SDK
         uses: android-actions/setup-android@v3
       - name: SDK bileşenleri
-        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
-      - name: Gradle 8.10.2 indir
-        run: |
-          curl -L -o gradle.zip https://services.gradle.org/distributions/gradle-8.10.2-bin.zip
-          unzip -q gradle.zip
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Gradle 8.10.2
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
       - name: APK oluştur
         working-directory: android
-        run: ../gradle-8.10.2/bin/gradle --no-daemon assembleDebug
+        run: gradle --no-daemon assembleDebug
       - name: APK yükle
         uses: actions/upload-artifact@v4
         with:
