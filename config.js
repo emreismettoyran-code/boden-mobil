@@ -1,52 +1,32 @@
-/* BODEN MOBİL — MERKEZİ VERİ SİSTEMİ */
+/* BODEN + PERSONEL MESAİ — merkezi veri */
 window.BODEN_API_BASE='https://tddhbkafzkplnhfirmwa.supabase.co/functions/v1/boden-api';
-window.BODEN_DATA_MODE='central';
-window.BODEN_CENTRAL=true;
+window.BODEN_DATA_MODE='central'; window.BODEN_CENTRAL=true;
 (function(){
- const API=window.BODEN_API_BASE.replace(/\/$/,''), nativeSet=Storage.prototype.setItem, nativeRemove=Storage.prototype.removeItem;
- let ready=false, applying=false;
- const syncKey=k=>k && !String(k).startsWith('boden_bridge_');
- const put=(k,v)=>fetch(API+'/state/'+encodeURIComponent(k),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({value:String(v)})}).catch(()=>{});
- const del=k=>fetch(API+'/state/'+encodeURIComponent(k),{method:'DELETE'}).catch(()=>{});
- const parse=v=>{try{return JSON.parse(v)}catch{return null}};
- function mergeArray(a,b){
-   if(!Array.isArray(a)||!Array.isArray(b))return null;
-   const map=new Map();
-   [...a,...b].forEach(x=>{if(!x||typeof x!=='object')return;const id=String(x.id||x._id||JSON.stringify(x));map.set(id,x)});
-   return [...map.values()];
- }
- function applyState(state){
+ const API=window.BODEN_API_BASE.replace(/\/$/,'');
+ const PKEY='personel-mesai-v2-people', RKEY='personel-mesai-v2-records';
+ const origSet=Storage.prototype.setItem, origRemove=Storage.prototype.removeItem; let applying=false;
+ const get=()=>fetch(API,{cache:'no-store'}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()});
+ const put=(k,v)=>fetch(API+'/state/'+encodeURIComponent(k),{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({value:String(v)})});
+ async function sync(){
+  try{
+   const d=await get(), state=d.state||{};
+   /* Personel verisi daha önce yalnızca bilgisayarda kalmışsa merkezi kayda ilk kez aktar. */
+   for(const k of [PKEY,RKEY]){
+    const local=localStorage.getItem(k);
+    if(state[k]===undefined && local!==null) await put(k,local);
+   }
+   const fresh=(await get()).state||{};
    applying=true;
-   try{Object.keys(state||{}).filter(syncKey).forEach(k=>{
-     const remote=state[k], local=localStorage.getItem(k);
-     const ra=parse(remote),la=parse(local), merged=mergeArray(la,ra);
-     if(merged) nativeSet.call(localStorage,k,JSON.stringify(merged));
-     else nativeSet.call(localStorage,k,typeof remote==='string'?remote:JSON.stringify(remote));
-   })}finally{applying=false}
+   for(const k of Object.keys(fresh)){
+    if(k===PKEY||k===RKEY||String(k).startsWith('personel-mesai-')) origSet.call(localStorage,k,String(fresh[k]));
+   }
+   applying=false;
+   window.BODEN_CENTRAL_READY=true; window.BODEN_CLOUD_ONLINE=true;
+   document.documentElement.setAttribute('data-boden-data-mode','central');
+   window.dispatchEvent(new Event('central-personel-ready'));
+  }catch(e){applying=false;window.BODEN_CENTRAL_READY=false;window.BODEN_CENTRAL_ERROR=String(e);}
  }
- function getCentral(){return fetch(API,{cache:'no-store',headers:{Accept:'application/json'}}).then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()})}
- window.BODEN_REFRESH_CENTRAL=function(){return getCentral().then(d=>{applyState(d.state||{});return d.state||{}})};
- try{
-   const x=new XMLHttpRequest();x.open('GET',API,false);x.timeout=8000;x.setRequestHeader('Accept','application/json');x.send(null);
-   if(x.status>=200&&x.status<300){const d=JSON.parse(x.responseText||'{}');applyState(d.state||{});window.BODEN_CENTRAL_READY=true;window.BODEN_CLOUD_ONLINE=true;}
-   else throw Error('HTTP '+x.status);
- }catch(e){window.BODEN_CENTRAL_READY=false;window.BODEN_CLOUD_ONLINE=false;window.BODEN_CENTRAL_ERROR=String(e);}
- ready=true;
- Storage.prototype.setItem=function(k,v){nativeSet.call(this,k,v);if(this===localStorage&&ready&&!applying&&syncKey(k))put(k,v)};
- Storage.prototype.removeItem=function(k){nativeRemove.call(this,k);if(this===localStorage&&ready&&!applying&&syncKey(k))del(k)};
- window.addEventListener('load',async()=>{
-   try{
-     const d=await getCentral(),state=d.state||{};
-     const important=['personel-mesai-v2-people','personel-mesai-v2-records'];
-     for(const k of important){
-       const local=localStorage.getItem(k), remote=state[k], la=parse(local), ra=parse(remote), merged=mergeArray(la,ra);
-       if(merged){nativeSet.call(localStorage,k,JSON.stringify(merged));await put(k,JSON.stringify(merged));}
-       else if(local!==null&&!remote){await put(k,local);}
-     }
-     window.BODEN_CENTRAL_READY=true;window.BODEN_CLOUD_ONLINE=true;
-     document.documentElement.setAttribute('data-boden-data-mode','central');
-     window.dispatchEvent(new Event('boden-central-ready'));
-     setTimeout(()=>{if(typeof window.renderHistory==='function')try{window.renderHistory()}catch(e){}},150);
-   }catch(e){window.BODEN_CENTRAL_READY=false;window.BODEN_CLOUD_ONLINE=false;}
- },{once:true});
+ Storage.prototype.setItem=function(k,v){origSet.call(this,k,v);if(this===localStorage&&!applying&&(k===PKEY||k===RKEY))put(k,v).catch(()=>{});};
+ Storage.prototype.removeItem=function(k){origRemove.call(this,k);if(this===localStorage&&!applying&&(k===PKEY||k===RKEY))fetch(API+'/state/'+encodeURIComponent(k),{method:'DELETE'}).catch(()=>{});};
+ window.BODEN_REFRESH_CENTRAL=sync; if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',sync,{once:true});else sync();
 })();
