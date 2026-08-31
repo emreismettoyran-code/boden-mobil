@@ -28,7 +28,32 @@ window.signup=async()=>{const e=$('email').value.trim();if(e!=='emreismettoyran@
 window.logout=async()=>{await sb.auth.signOut();location.reload()}
 window.showPage=(id,b)=>{document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');document.querySelectorAll('nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
 async function ensureLokos(){if(!LK.length){const rows=defaults.map(loko_no=>({loko_no,durum:'Faal'}));const {error}=await sb.from('tcdd_locomotives').insert(rows);if(error)console.error(error)}}
-async function load(){try{let [p,l,m,w]=await Promise.all([sb.from('tcdd_personnel').select('*').order('ad'),sb.from('tcdd_locomotives').select('*').order('loko_no'),sb.from('tcdd_overtime').select('*').order('tarih',{ascending:false}),sb.from('tcdd_loco_work').select('*').order('tarih',{ascending:false})]);const errs=[p,l,m,w].map(x=>x.error).filter(Boolean);if(errs.length)throw errs[0];P=p.data||[];LK=l.data||[];if(!LK.length){await ensureLokos();let z=await sb.from('tcdd_locomotives').select('*').order('loko_no');if(z.error)throw z.error;LK=z.data||[]}M=m.data||[];W=w.data||[];render()}catch(e){console.error(e);alert('Veriler yüklenirken hata oluştu: '+(e.message||'Bilinmeyen hata'));}}
+async function load(){
+  // Uygulama açılır açılmaz lokomotif listesini göster; ağ gecikmesi ekranı boş bırakmasın.
+  if(!LK.length){LK=defaults.map(loko_no=>({id:'local-'+loko_no,loko_no,durum:'Faal',model:'',lokasyon:'',notlar:''}));}
+  render();
+  try{
+    const timeout=(p,ms=12000)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('Bağlantı zaman aşımına uğradı.')),ms))]);
+    let [p,l,m,w]=await timeout(Promise.all([
+      sb.from('tcdd_personnel').select('*').order('ad'),
+      sb.from('tcdd_locomotives').select('*').order('loko_no'),
+      sb.from('tcdd_overtime').select('*').order('tarih',{ascending:false}),
+      sb.from('tcdd_loco_work').select('*').order('tarih',{ascending:false})
+    ]));
+    const errs=[p,l,m,w].map(x=>x.error).filter(Boolean);
+    if(errs.length)throw errs[0];
+    P=p.data||[];LK=(l.data&&l.data.length)?l.data:LK;M=m.data||[];W=w.data||[];
+    render();
+  }catch(e){
+    console.error(e);
+    $('sL').textContent=LK.length;
+    $('sP').textContent=P.length;
+    $('sM').textContent=fmt(M.reduce((s,x)=>s+Number(x.saat||0),0))+' Saat';
+    $('sW').textContent=W.length;
+    const x=document.getElementById('authMsg');
+    if(x){x.textContent='Veritabanı bağlantısı gecikti. Lokomotif listesi ekranda; bağlantı tekrar denenecek.';x.className='notice err';}
+  }
+}
 function pname(id){return (P.find(x=>x.id===id)||{}).ad||'-'}
 function renderSelects(){let opts='<option value="">Seçiniz</option>'+P.filter(x=>x.durum==='Aktif').map(x=>'<option value="'+x.id+'">'+x.ad+'</option>').join('');$('mP').innerHTML=opts;$('wP').innerHTML=opts;$('wFilter').innerHTML='<option value="">Tüm Personeller</option>'+P.map(x=>'<option value="'+x.id+'">'+x.ad+'</option>').join('');$('wL').innerHTML=LK.filter(x=>x.durum!=='Pasif').map(x=>'<option value="'+x.loko_no+'">'+x.loko_no+' '+(x.model||'')+'</option>').join('')}
 function render(){renderSelects();$('pTable').innerHTML=P.map(x=>'<tr><td><b>'+x.ad+'</b></td><td>'+ (x.sicil||'-')+'</td><td>'+ (x.gorev||'-')+'</td><td><span class="badge">'+x.durum+'</span></td><td><button onclick="editPersonel(\''+x.id+'\')">Düzenle</button> <button class="danger" onclick="delP(\''+x.id+'\')">Sil</button></td></tr>').join('')||'<tr><td colspan="5">Kayıt yok.</td></tr>';
