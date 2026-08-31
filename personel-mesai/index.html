@@ -31,7 +31,12 @@ async function ensureLokos(){if(!LK.length){const rows=defaults.map(loko_no=>({l
 async function load(){
   // Uygulama açılır açılmaz lokomotif listesini göster; ağ gecikmesi ekranı boş bırakmasın.
   if(!LK.length){LK=defaults.map(loko_no=>({id:'local-'+loko_no,loko_no,durum:'Faal',model:'',lokasyon:'',notlar:''}));}
-  render();
+  // Sayaçları render fonksiyonundan bağımsız olarak hemen doldur.
+  $('sL').textContent=LK.length;
+  $('sP').textContent=P.length;
+  $('sM').textContent=fmt(M.reduce((s,x)=>s+Number(x.saat||0),0))+' Saat';
+  $('sW').textContent=W.length;
+  try{render()}catch(e){console.error('İlk arayüz çizimi:',e)}
   try{
     const timeout=(p,ms=12000)=>Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error('Bağlantı zaman aşımına uğradı.')),ms))]);
     let [p,l,m,w]=await timeout(Promise.all([
