@@ -3,6 +3,102 @@
 <title>TCDD Teknik | Personel ve Lokomotif Performans</title>
 <style>
 :root{--navy:#102a43;--blue:#1769aa;--bg:#f4f7fb;--card:#fff;--muted:#64748b;--green:#16805b;--red:#c0392b;--line:#dbe3ec}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:#172033}header{background:linear-gradient(135deg,var(--navy),#1d4f7a);color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;gap:12px}header h1{font-size:20px;margin:0}header small{opacity:.8}.wrap{max-width:1450px;margin:auto;padding:20px}.login{max-width:430px;margin:9vh auto}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #15263b0b}nav{background:#fff;border-bottom:1px solid var(--line);padding:10px;display:flex;gap:8px;flex-wrap:wrap}button{border:0;border-radius:9px;padding:10px 14px;background:#eaf0f6;color:#17324d;font-weight:700;cursor:pointer}.primary,.active{background:var(--blue)!important;color:#fff}.success{background:var(--green)!important;color:#fff}.danger{background:var(--red)!important;color:#fff}.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.wide{grid-column:span 2}label{font-size:12px;font-weight:700;color:#415267;display:block;margin-bottom:5px}input,select{width:100%;padding:11px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}select[multiple]{min-height:150px}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.stat .n{font-size:28px;font-weight:800;margin-top:8px}.label,.muted{color:var(--muted)}.label{font-size:13px;font-weight:700}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;background:#fff}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}th{background:#eef4f9}.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#e7f5ee;color:#12613f;font-size:11px;font-weight:700}.bar{height:10px;background:#e7edf3;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--blue)}.notice{padding:10px;border-radius:8px;margin:10px 0;display:none}.ok{background:#e7f5ee;color:#12613f}.err{background:#fdecea;color:#a12622}@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}.form{grid-template-columns:repeat(2,1fr)}}@media(max-width:560px){header{padding:14px}.wrap{padding:12px}.grid,.form{grid-template-columns:1fr}.wide{grid-column:auto}th,td{font-size:11px;padding:8px 6px}}
+
+
+/***** V3 KURUMSAL İK ARAYÜZÜ *****/
+:root{
+ --navy:#17324d;
+ --blue:#245f8f;
+ --blue2:#2f74a8;
+ --bg:#f3f5f7;
+ --card:#ffffff;
+ --muted:#6b7785;
+ --green:#237a57;
+ --red:#b94a48;
+ --line:#d9e0e6;
+}
+body{background:#f3f5f7;color:#1f2933;font-family:Arial,Helvetica,sans-serif}
+header{
+ background:#17324d!important;
+ padding:16px 28px!important;
+ border-bottom:4px solid #245f8f;
+ box-shadow:none!important
+}
+header h1{letter-spacing:.2px;font-size:19px!important}
+header small{color:#dbe6ee!important;opacity:1!important}
+nav{
+ background:#ffffff!important;
+ padding:10px calc((100% - 1450px)/2 + 20px)!important;
+ border-bottom:1px solid #d9e0e6!important;
+ box-shadow:0 2px 8px rgba(20,40,60,.04)
+}
+nav button{
+ background:#f1f3f5!important;
+ color:#425466!important;
+ border:1px solid #e1e6eb!important;
+ border-radius:7px!important;
+ padding:10px 15px!important;
+ box-shadow:none!important
+}
+nav button:hover{background:#e8eef3!important}
+nav button.active,.primary,.active{
+ background:#245f8f!important;
+ color:#fff!important;
+ border-color:#245f8f!important
+}
+.wrap{padding:24px!important}
+h2{color:#17324d;font-size:21px;margin:8px 0 18px}
+.card{
+ background:#fff!important;
+ border:1px solid #dfe5ea!important;
+ border-radius:10px!important;
+ box-shadow:0 2px 8px rgba(23,50,77,.06)!important
+}
+.grid{gap:16px!important}
+.stat{
+ min-height:118px;
+ border-top:4px solid #245f8f!important;
+ padding:20px!important
+}
+.stat .label{color:#607080!important;letter-spacing:.4px}
+.stat .n{color:#17324d!important;font-size:30px!important;margin-top:12px!important}
+label{color:#455a6f!important}
+input,select{
+ border:1px solid #cfd8df!important;
+ border-radius:7px!important;
+ background:#fff!important;
+ color:#263544!important
+}
+input:focus,select:focus{
+ outline:none!important;
+ border-color:#245f8f!important;
+ box-shadow:0 0 0 3px rgba(36,95,143,.12)!important
+}
+button{border-radius:7px!important}
+.success{background:#237a57!important}
+.danger{background:#b94a48!important}
+.tablewrap{
+ border:1px solid #d9e0e6!important;
+ border-radius:9px!important;
+ box-shadow:none!important
+}
+th{
+ background:#eef2f5!important;
+ color:#405366!important;
+ font-size:12px!important;
+ text-transform:uppercase
+}
+td{color:#334e68!important}
+tr:hover td{background:#f7f9fa}
+.badge{background:#e8f3ed!important;color:#237a57!important}
+.bar{background:#e7edf1!important}
+.bar i{background:#245f8f!important}
+.notice{border-radius:7px!important}
+@media(max-width:900px){
+ nav{padding:10px!important}
+ .wrap{padding:14px!important}
+}
+
 </style></head><body>
 <div id="loginView"><header><div><h1>TCDD TEKNİK BAKIM SİSTEMİ</h1><small>Özel Personel • Mesai • Lokomotif Performans Sistemi</small></div></header><div class="wrap login"><div class="card"><h2>Güvenli Giriş</h2><p class="muted">Kayıtlar bulutta saklanır. Tarayıcı kapansa veya günler geçse silinmez.</p><div id="authMsg" class="notice"></div><label>E-posta</label><input id="email" type="email"><br><label>Şifre</label><input id="password" type="password" minlength="6"><div class="actions"><button class="primary" onclick="login()">Giriş Yap</button><button onclick="signup()">İlk Kez Hesap Oluştur</button></div></div></div></div>
 <div id="appView" style="display:none"><header><div><h1>TCDD TEKNİK BAKIM SİSTEMİ</h1><small id="userInfo"></small></div><button onclick="logout()">Çıkış Yap</button></header>
